@@ -5,7 +5,7 @@ import logging
 from telebot.handler_backends import ContinueHandling
 # Замени 'TOKEN' на токен твоего бота
 # Этот токен ты получаешь от BotFather, чтобы бот мог работать
-bot = telebot.TeleBot("7988678579:AAHdVG6Jqlep-8tRS6_aIhj0gl_RBr-hXjM")
+bot = telebot.TeleBot("7")
 
 @bot.message_handler(commands=['start'])
 def button(message):
