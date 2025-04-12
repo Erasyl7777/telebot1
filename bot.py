@@ -1,5 +1,6 @@
 import telebot
 import funcs_bot
+import logging
 # Замени 'TOKEN' на токен твоего бота
 # Этот токен ты получаешь от BotFather, чтобы бот мог работать
 bot = telebot.TeleBot("token")
@@ -13,14 +14,16 @@ def send_bye(message):
 
 
 
-@bot.message_handler(content_types=["text"])
+@bot.message_handler(func=lambda message: True)
 def handle_message(message):
-    if message.text.lower == "расскажи анекдот" or  "раскажи анекдот":
-        bot.send_message(message.chat.id, funcs_bot.anekdot() )
+    if message.text == "Кнопка 1":
+        bot.send_message(message.chat.id, "Вы нажали Кнопку 1!")
+    elif message.text == "Кнопка 2":
+        bot.send_message(message.chat.id, "Вы нажали Кнопку 2!")
 
-@bot.message_handler(content_types=["text"])
-def send_hello(message):
-    if message.text.lower == "hello" or  "привет":
-        bot.send_message(message.chat.id, f"привет, {message.from_user.first_name}")
+if __name__ == "__main__":
+    try:
+        bot.polling(non_stop=True)
+    except Exception as e:
+        logging.error(f"Bot polling error: {e}")
 
-bot.polling(non_stop=True)
