@@ -1,29 +1,26 @@
 import telebot
+from telebot import types
 import funcs_bot
 import logging
+from telebot.handler_backends import ContinueHandling
 # Замени 'TOKEN' на токен твоего бота
 # Этот токен ты получаешь от BotFather, чтобы бот мог работать
-bot = telebot.TeleBot("token")
+bot = telebot.TeleBot("7988678579:AAHdVG6Jqlep-8tRS6_aIhj0gl_RBr-hXjM")
 
 @bot.message_handler(commands=['start'])
-def send_welcome(message):
-    bot.reply_to(message, "Привет! Я твой Telegram бот. Напиши что-нибудь!")
-@bot.message_handler(commands=['bye'])
-def send_bye(message):
-    bot.reply_to(message, "Пока! Удачи!")
-
-
-
-@bot.message_handler(func=lambda message: True)
-def handle_message(message):
-    if message.text == "Кнопка 1":
-        bot.send_message(message.chat.id, "Вы нажали Кнопку 1!")
-    elif message.text == "Кнопка 2":
-        bot.send_message(message.chat.id, "Вы нажали Кнопку 2!")
-
-if __name__ == "__main__":
-    try:
-        bot.polling(non_stop=True)
-    except Exception as e:
-        logging.error(f"Bot polling error: {e}")
+def button(message):
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    item1 = types.InlineKeyboardButton("create password", callback_data="pass")
+    item2 = types.InlineKeyboardButton("tell joke", callback_data="anekdot")
+    markup.add(item1, item2)
+    bot.send_message(message.chat.id, "Выберите опцию:", reply_markup=markup)
+@bot.callback_query_handler(func=lambda call:True)
+def callback(call):
+    if call.message:
+        if call.data == "pass":
+            bot.send_message(call.message.chat.id, funcs_bot.parol()) 
+              
+        elif call.data == "anekdot":
+            bot.send_message(call.message.chat.id, funcs_bot.anekdot())
+bot.polling(non_stop=True)
 
